@@ -26,6 +26,8 @@ koin = "4.1.1"
 
 ktor = "3.4.1"
 
+dataStore = "1.2.1"
+
 kmLog = "2.1.0"
 
 [libraries]
@@ -80,6 +82,10 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 
 # serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+
+# dataStore
+dataStore = { module = "androidx.datastore:datastore", version.ref = "dataStore"}
+dataStore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

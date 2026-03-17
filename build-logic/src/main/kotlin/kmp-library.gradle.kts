@@ -30,5 +30,11 @@ kotlin {
                 implementation(libs.kmLog)
             }
         }
+
+        androidMain {
+            dependencies {
+                implementation(libs.koin.android)
+            }
+        }
     }
 }
