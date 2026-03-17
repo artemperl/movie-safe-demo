@@ -14,6 +14,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":shared:network"))
+                implementation(project(":shared:persistence"))
             }
         }
     }
