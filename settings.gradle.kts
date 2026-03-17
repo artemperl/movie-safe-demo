@@ -31,3 +31,5 @@ dependencyResolutionManagement {
 include("client:composeApp")
 include("shared:app")
 include("shared:feature:search")
+include("shared:feature:watchlist")
+include("shared:feature:preferences")
