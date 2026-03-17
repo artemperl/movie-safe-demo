@@ -2,9 +2,12 @@ package com.moviesafe
 
 import com.moviesafe.api.TmdbSearchService
 import com.moviesafe.model.Movie
-import com.moviesafe.model.TvSeries
 import com.moviesafe.repository.SearchRepository
 import com.moviesafe.repository.SearchRepositoryImpl
+import com.moviesafe.usecase.ObserveMovies
+import com.moviesafe.usecase.SearchMovies
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.serialization.builtins.ListSerializer
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -24,18 +27,14 @@ val searchModule = module {
         )
     }
 
-    single(named("tv_series_store")) {
-        PersistenceDataStore(
-            serializer = ListSerializer(TvSeries.serializer()),
-            filename = "tv_series_search",
+    single<SearchRepository> {
+        SearchRepositoryImpl(
+            coroutineDispatcher = Dispatchers.IO,
+            searchService = get(),
+            moviesDataStore = get(named("movies_store")),
         )
     }
 
-    single<SearchRepository> {
-        SearchRepositoryImpl(
-            searchService = get(),
-            moviesDataStore = get(named("movies_store")),
-            tvSeriesDataStore = get(named("tv_series_store")),
-        )
-    }
+    factory { ObserveMovies(get()) }
+    factory { SearchMovies(get()) }
 }
