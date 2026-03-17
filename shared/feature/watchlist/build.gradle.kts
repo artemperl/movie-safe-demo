@@ -2,8 +2,10 @@ plugins {
     id("kmp-library")
 }
 
-android {
-    namespace = "com.moviesafe.watchlist"
+kotlin {
+    android {
+        namespace = "com.moviesafe.watchlist"
+    }
 }
 
 kotlin {
