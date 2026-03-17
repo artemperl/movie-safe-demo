@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "9.1.0"
 
 # sdk versions
 android-compileSdk = "36"
@@ -56,9 +56,15 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin"  }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin"  }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin"  }
 
+# build-logic
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+composeCompilerGradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

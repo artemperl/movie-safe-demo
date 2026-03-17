@@ -1,4 +1,5 @@
 rootProject.name = "MovieSafe"
+includeBuild("build-logic")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -29,5 +30,7 @@ dependencyResolutionManagement {
 }
 
 include("client:composeApp")
-include("shared:app")
+include("client:androidApp")
 include("shared:feature:search")
+include("shared:feature:watchlist")
+include("shared:feature:preferences")
