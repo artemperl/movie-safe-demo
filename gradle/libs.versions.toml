@@ -18,12 +18,15 @@ composeMultiplatform = "1.10.2"
 
 kotlin = "2.3.20"
 coroutines = "1.10.2"
+serialization-json = "1.10.0"
 
 material3 = "1.10.0-alpha05"
 
 koin = "4.1.1"
 
 ktor = "3.4.1"
+
+kmLog = "2.1.0"
 
 [libraries]
 # androidx
@@ -50,6 +53,9 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 # testing
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
+# logging
+kmLog = { module = "com.diamondedge:logging", version.ref = "kmLog"}
+
 # koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin"  }
@@ -70,6 +76,10 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-serialization-kotlinx = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+
+# serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -77,3 +87,4 @@ androidLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref 
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
