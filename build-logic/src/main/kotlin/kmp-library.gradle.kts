@@ -6,6 +6,7 @@ plugins {
     id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
+
 }
 
 private val libs = the<LibrariesForLibs>()
@@ -26,6 +27,13 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
+                implementation(libs.kmLog)
+            }
+        }
+
+        androidMain {
+            dependencies {
+                implementation(libs.koin.android)
             }
         }
     }
