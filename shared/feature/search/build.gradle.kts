@@ -1,5 +1,6 @@
 plugins {
     id("kmp-library")
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -12,6 +13,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:network"))
             }
         }
     }
