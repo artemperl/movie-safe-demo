@@ -94,7 +94,7 @@ class SearchViewModel(
                 page = currentState.currentPage + 1,
             )
                 .onSuccess { pageInfo -> mutate(SearchMutation.SetPageInfo(pageInfo)) }
-                .onFailure { error -> mutate(SearchMutation.SetError(error.message)) }
+                .onFailure { error -> mutate(SearchMutation.SetError(error)) }
             mutate(SearchMutation.SetPagingLoading(false))
         }
     }
@@ -111,7 +111,7 @@ class SearchViewModel(
         clearMoviesUseCase()
         searchMoviesUseCase(query, page = 1)
             .onSuccess { pageInfo -> mutate(SearchMutation.SetPageInfo(pageInfo)) }
-            .onFailure { error -> mutate(SearchMutation.SetError(error.message)) }
+            .onFailure { error -> mutate(SearchMutation.SetError(error)) }
         mutate(SearchMutation.SetSearchLoading(false))
     }
 

@@ -143,9 +143,11 @@ private fun SearchScreenContent(
                     }
                 }
 
+                // TODO handle different exception types - network, api, domain specific etc.
                 state.error?.let { error ->
                     Text(
-                        text = error,
+                        // TODO generic error message string resource
+                        text = error.message ?: "An error occured",
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier
                             .align(Alignment.Center)

@@ -9,7 +9,7 @@ data class SearchState(
     val isPagingLoading: Boolean = false,
     val currentPage: Int = 0,
     val totalPages: Int = 1,
-    val error: String? = null,
+    val error: Throwable? = null,
 ) {
     val canPaginate: Boolean
         get() = query.isNotBlank() &&
