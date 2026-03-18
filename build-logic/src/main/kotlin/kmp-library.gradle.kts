@@ -28,12 +28,19 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.kmLog)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.compose.ui.tooling.preview)
             }
         }
 
         androidMain {
             dependencies {
                 implementation(libs.koin.android)
+                implementation(libs.compose.ui.tooling)
             }
         }
     }

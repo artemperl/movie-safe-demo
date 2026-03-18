@@ -1,6 +1,6 @@
 plugins {
     id("kmp-library")
-    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -13,11 +13,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.ktor.client.core)
+                api(libs.ktor.client.core)
+                api(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.serialization.kotlinx)
                 implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.kotlinx.serialization.json)
             }
         }
 
