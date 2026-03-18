@@ -38,6 +38,7 @@ class SearchViewModel(
 
     init {
         viewModelScope.launch {
+            clearMoviesUseCase()
             observeMoviesUseCase().collect { movies ->
                 mutate(SearchMutation.SetMovies(movies.orEmpty()))
             }
@@ -46,7 +47,7 @@ class SearchViewModel(
             // fire queries with debounce
             queryFlow
                 .filter { it.isNotBlank() }
-                .debounce(300L)
+                .debounce(500L)
                 .collect { query ->
                     if (query.isBlank()) {
                         clearSearch()
