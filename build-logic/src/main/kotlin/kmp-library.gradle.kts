@@ -33,12 +33,14 @@ kotlin {
                 implementation(libs.compose.material3)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.compose.ui.tooling.preview)
             }
         }
 
         androidMain {
             dependencies {
                 implementation(libs.koin.android)
+                implementation(libs.compose.ui.tooling)
             }
         }
     }

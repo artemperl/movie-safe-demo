@@ -11,14 +11,12 @@ import com.moviesafe.usecase.ClearMoviesUseCase
 import com.moviesafe.usecase.ObserveMoviesUseCase
 import com.moviesafe.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.sample
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
@@ -32,6 +30,9 @@ class SearchViewModel(
 
     var state by mutableStateOf(SearchState())
         private set
+
+    private val _events = MutableSharedFlow<Event>(extraBufferCapacity = 1)
+    val events: SharedFlow<Event> = _events.asSharedFlow()
 
     private val queryFlow = MutableStateFlow("")
 
@@ -63,12 +64,19 @@ class SearchViewModel(
         when (intent) {
             is SearchIntent.UpdateQuery -> onUpdateQuery(intent.query)
             SearchIntent.LoadNextPage -> onLoadNextPage()
+            is SearchIntent.SelectMovie -> onSelectMovie(intent.movieId)
         }
     }
 
     private fun mutate(mutation: SearchMutation) {
         log.d { "[MUTATION] $mutation" }
         state = state.reduce(mutation)
+    }
+
+    private fun onSelectMovie(movieId: String) {
+        viewModelScope.launch {
+            _events.emit(Event.MovieSelected(movieId))
+        }
     }
 
     private fun onUpdateQuery(query: String) {
@@ -107,6 +115,10 @@ class SearchViewModel(
             .onSuccess { pageInfo -> mutate(SearchMutation.SetPageInfo(pageInfo)) }
             .onFailure { error -> mutate(SearchMutation.SetError(error.message)) }
         mutate(SearchMutation.SetSearchLoading(false))
+    }
+
+    sealed interface Event {
+        data class MovieSelected(val movieId: String) : Event
     }
 
 }
