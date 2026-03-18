@@ -3,11 +3,10 @@
 package com.moviesafe.ui
 
 import com.moviesafe.aMovie
-import com.moviesafe.fake.FakeSearchRepository
+import com.moviesafe.fake.FakeClearMoviesUseCase
+import com.moviesafe.fake.FakeObserveMoviesUseCase
+import com.moviesafe.fake.FakeSearchMoviesUseCase
 import com.moviesafe.model.PageInformation
-import com.moviesafe.usecase.ClearMoviesUseCase
-import com.moviesafe.usecase.ObserveMoviesUseCase
-import com.moviesafe.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,24 +23,27 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-private const val DEBOUNCE_MS = 500L
 private const val PAST_DEBOUNCE_MS = 600L
 
 class SearchViewModelTest {
 
     private val scheduler = TestCoroutineScheduler()
     private val testDispatcher = StandardTestDispatcher(scheduler)
-    private lateinit var repository: FakeSearchRepository
+    private lateinit var searchMoviesUseCase: FakeSearchMoviesUseCase
+    private lateinit var observeMoviesUseCase: FakeObserveMoviesUseCase
+    private lateinit var clearMoviesUseCase: FakeClearMoviesUseCase
     private lateinit var viewModel: SearchViewModel
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        repository = FakeSearchRepository()
+        searchMoviesUseCase = FakeSearchMoviesUseCase()
+        observeMoviesUseCase = FakeObserveMoviesUseCase()
+        clearMoviesUseCase = FakeClearMoviesUseCase()
         viewModel = SearchViewModel(
-            searchMoviesUseCase = SearchMoviesUseCase(repository),
-            observeMoviesUseCase = ObserveMoviesUseCase(repository),
-            clearMoviesUseCase = ClearMoviesUseCase(repository),
+            searchMoviesUseCase = searchMoviesUseCase,
+            observeMoviesUseCase = observeMoviesUseCase,
+            clearMoviesUseCase = clearMoviesUseCase,
         )
     }
 
@@ -58,9 +60,9 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `init clears movies in repository`() = runTest(testDispatcher) {
+    fun `init clears movies`() = runTest(testDispatcher) {
         advanceUntilIdle()
-        assertEquals(1, repository.clearCallCount)
+        assertEquals(1, clearMoviesUseCase.callCount)
     }
 
     // UpdateQuery
@@ -73,15 +75,13 @@ class SearchViewModelTest {
 
     @Test
     fun `UpdateQuery triggers search after debounce`() = runTest(testDispatcher) {
-        repository.searchResult = Result.success(PageInformation(1, 3))
-
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
 
-        assertEquals(1, repository.searchCallCount)
-        assertEquals("batman", repository.lastSearchQuery)
-        assertEquals(1, repository.lastSearchPage)
+        assertEquals(1, searchMoviesUseCase.callCount)
+        assertEquals("batman", searchMoviesUseCase.lastQuery)
+        assertEquals(1, searchMoviesUseCase.lastPage)
     }
 
     @Test
@@ -94,13 +94,13 @@ class SearchViewModelTest {
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
 
-        assertEquals(1, repository.searchCallCount)
-        assertEquals("batman", repository.lastSearchQuery)
+        assertEquals(1, searchMoviesUseCase.callCount)
+        assertEquals("batman", searchMoviesUseCase.lastQuery)
     }
 
     @Test
     fun `search success updates page info in state`() = runTest(testDispatcher) {
-        repository.searchResult = Result.success(PageInformation(1, 5))
+        searchMoviesUseCase.result = Result.success(PageInformation(1, 5))
 
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
@@ -113,7 +113,7 @@ class SearchViewModelTest {
     @Test
     fun `search failure sets error in state`() = runTest(testDispatcher) {
         val error = RuntimeException("network error")
-        repository.searchResult = Result.failure(error)
+        searchMoviesUseCase.result = Result.failure(error)
 
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
@@ -124,12 +124,12 @@ class SearchViewModelTest {
 
     @Test
     fun `new search clears previous error`() = runTest(testDispatcher) {
-        repository.searchResult = Result.failure(RuntimeException("first error"))
+        searchMoviesUseCase.result = Result.failure(RuntimeException("first error"))
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
 
-        repository.searchResult = Result.success(PageInformation(1, 1))
+        searchMoviesUseCase.result = Result.success(PageInformation(1, 1))
         viewModel.onIntent(SearchIntent.UpdateQuery("inception"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
@@ -150,31 +150,30 @@ class SearchViewModelTest {
 
     @Test
     fun `LoadNextPage does nothing when canPaginate is false`() = runTest(testDispatcher) {
-        // Default state has canPaginate = false (currentPage = 0)
         viewModel.onIntent(SearchIntent.LoadNextPage)
         advanceUntilIdle()
 
-        assertEquals(0, repository.searchCallCount)
+        assertEquals(0, searchMoviesUseCase.callCount)
     }
 
     @Test
     fun `LoadNextPage loads next page when canPaginate is true`() = runTest(testDispatcher) {
-        repository.searchResult = Result.success(PageInformation(1, 3))
+        searchMoviesUseCase.result = Result.success(PageInformation(1, 3))
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
 
-        repository.searchResult = Result.success(PageInformation(2, 3))
+        searchMoviesUseCase.result = Result.success(PageInformation(2, 3))
         viewModel.onIntent(SearchIntent.LoadNextPage)
         advanceUntilIdle()
 
         assertEquals(2, viewModel.state.currentPage)
-        assertEquals(2, repository.searchCallCount)
+        assertEquals(2, searchMoviesUseCase.callCount)
     }
 
     @Test
     fun `LoadNextPage sends correct next page number`() = runTest(testDispatcher) {
-        repository.searchResult = Result.success(PageInformation(1, 5))
+        searchMoviesUseCase.result = Result.success(PageInformation(1, 5))
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
@@ -182,12 +181,12 @@ class SearchViewModelTest {
         viewModel.onIntent(SearchIntent.LoadNextPage)
         advanceUntilIdle()
 
-        assertEquals(2, repository.lastSearchPage)
+        assertEquals(2, searchMoviesUseCase.lastPage)
     }
 
     @Test
     fun `LoadNextPage paging loading is false after completion`() = runTest(testDispatcher) {
-        repository.searchResult = Result.success(PageInformation(1, 3))
+        searchMoviesUseCase.result = Result.success(PageInformation(1, 3))
         viewModel.onIntent(SearchIntent.UpdateQuery("batman"))
         advanceTimeBy(PAST_DEBOUNCE_MS)
         advanceUntilIdle()
@@ -213,25 +212,25 @@ class SearchViewModelTest {
         job.cancel()
     }
 
-    // Repository observation
+    // Use case observation
 
     @Test
-    fun `movies from repository are reflected in state`() = runTest(testDispatcher) {
-        advanceUntilIdle() // let init observer start collecting
+    fun `movies from use case are reflected in state`() = runTest(testDispatcher) {
+        advanceUntilIdle()
 
         val movies = listOf(aMovie("1"), aMovie("2"))
-        repository.setMovies(movies)
+        observeMoviesUseCase.setMovies(movies)
         advanceUntilIdle()
 
         assertEquals(movies, viewModel.state.movies)
     }
 
     @Test
-    fun `null emission from repository results in empty movies list`() = runTest(testDispatcher) {
-        repository.setMovies(listOf(aMovie()))
+    fun `null emission from use case results in empty movies list`() = runTest(testDispatcher) {
+        observeMoviesUseCase.setMovies(listOf(aMovie()))
         advanceUntilIdle()
 
-        repository.setMovies(null)
+        observeMoviesUseCase.setMovies(null)
         advanceUntilIdle()
 
         assertTrue(viewModel.state.movies.isEmpty())
