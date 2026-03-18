@@ -13,6 +13,7 @@ class SearchRepositoryImpl(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val searchService: TmdbSearchServiceImpl,
     private val moviesDataStore: PersistenceDataStore<List<Movie>>,
+    private val posterBaseUrl: String,
 ) : SearchRepository {
 
     override fun onMovies(): Flow<List<Movie>?> {
@@ -29,7 +30,7 @@ class SearchRepositoryImpl(
                 return Result.failure(error)
             }
 
-        val result = pagedResponse.results.map { it.toDomain() }
+        val result = pagedResponse.results.map { it.toDomain(posterBaseUrl) }
 
         result.let { movies ->
             moviesDataStore.updateData { currentMovies ->

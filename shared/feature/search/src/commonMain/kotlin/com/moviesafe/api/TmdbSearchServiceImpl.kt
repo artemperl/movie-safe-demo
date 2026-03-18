@@ -13,7 +13,7 @@ import io.ktor.http.HttpHeaders
 
 class TmdbSearchServiceImpl(
     private val httpClient: HttpClient,
-    private val baseUrl: String
+    private val baseUrl: String,
 ) : TmdbSearchService {
 
     override suspend fun searchMovies(

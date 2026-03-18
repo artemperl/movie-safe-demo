@@ -7,7 +7,7 @@ data class TvSeries(
     val id: Int,
     val name: String,
     val overview: String,
-    val posterPath: String?,
+    val posterUrl: String?,
     val backdropPath: String?,
     val firstAirDate: String?,
     val voteAverage: Double,

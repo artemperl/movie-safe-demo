@@ -166,7 +166,7 @@ private fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
     ) {
         Box {
             AsyncImage(
-                model = movie.posterPath?.let { "$TMDB_IMAGE_BASE_URL$it" },
+                model = movie.posterUrl?.let { "$TMDB_IMAGE_BASE_URL$it" },
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
@@ -207,7 +207,7 @@ private val previewMovies = listOf(
         id = index.toString(),
         title = title,
         overview = "A compelling story about heroes and villains.",
-        posterPath = null,
+        posterUrl = null,
         backdropPath = null,
         releaseDate = "2024",
         voteAverage = 8.0,

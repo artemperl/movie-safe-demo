@@ -17,11 +17,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val searchModule = module {
+    includes(networkModule)
 
     single<TmdbSearchService> {
         TmdbSearchServiceImpl(
             httpClient = get(),
-            baseUrl = get(named("tmdb_base_url"))
+            baseUrl = get(named("tmdb_base_url")),
         )
     }
 
@@ -37,6 +38,7 @@ val searchModule = module {
             coroutineDispatcher = Dispatchers.IO,
             searchService = get(),
             moviesDataStore = get(named("movies_store")),
+            posterBaseUrl = get(named("tmdb_poster_base_url")),
         )
     }
 

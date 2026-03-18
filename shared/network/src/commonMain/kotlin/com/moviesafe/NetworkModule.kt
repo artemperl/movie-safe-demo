@@ -39,4 +39,9 @@ val networkModule = module {
         "https://api.themoviedb.org/3"
     }
 
+    single(named("tmdb_poster_base_url")) {
+        // TODO dynamically resolve this potentially
+        "https://image.tmdb.org/t/p/w342"
+    }
+
 }
