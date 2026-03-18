@@ -22,10 +22,9 @@ class SearchRepositoryImpl(
 
     override suspend fun searchMovies(
         query: String,
-        accessToken: String,
         page: Int,
     ): Result<PageInformation> {
-        val pagedResponse = searchService.searchMovies(query, accessToken, page)
+        val pagedResponse = searchService.searchMovies(query, page)
             .getOrElse { error ->
                 return Result.failure(error)
             }

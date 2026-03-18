@@ -53,7 +53,6 @@ val searchModule = module {
             searchMoviesUseCase = get(),
             observeMoviesUseCase = get(),
             clearMoviesUseCase = get(),
-            accessToken = get(named("tmdb_access_token")),
         )
     }
 }

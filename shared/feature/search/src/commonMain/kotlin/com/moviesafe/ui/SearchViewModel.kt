@@ -24,8 +24,6 @@ class SearchViewModel(
     private val searchMoviesUseCase: SearchMoviesUseCase,
     private val observeMoviesUseCase: ObserveMoviesUseCase,
     private val clearMoviesUseCase: ClearMoviesUseCase,
-    // TODO put access token somewhere
-    private val accessToken: String,
 ) : ViewModel() {
 
     var state by mutableStateOf(SearchState())
@@ -92,7 +90,6 @@ class SearchViewModel(
             mutate(SearchMutation.SetPagingLoading(true))
             searchMoviesUseCase(
                 query = currentState.query,
-                accessToken = accessToken,
                 page = currentState.currentPage + 1,
             )
                 .onSuccess { pageInfo -> mutate(SearchMutation.SetPageInfo(pageInfo)) }
@@ -111,7 +108,7 @@ class SearchViewModel(
         mutate(SearchMutation.SetSearchLoading(true))
         mutate(SearchMutation.SetError(null))
         clearMoviesUseCase()
-        searchMoviesUseCase(query, accessToken, page = 1)
+        searchMoviesUseCase(query, page = 1)
             .onSuccess { pageInfo -> mutate(SearchMutation.SetPageInfo(pageInfo)) }
             .onFailure { error -> mutate(SearchMutation.SetError(error.message)) }
         mutate(SearchMutation.SetSearchLoading(false))
