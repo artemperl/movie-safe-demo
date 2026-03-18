@@ -15,4 +15,6 @@ interface SearchRepository {
         page: Int = 1,
     ): Result<PageInformation>
 
+    suspend fun clearMovies()
+
 }

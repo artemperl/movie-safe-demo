@@ -45,4 +45,8 @@ class SearchRepositoryImpl(
         )
     }
 
+    override suspend fun clearMovies() {
+        moviesDataStore.updateData { null }
+    }
+
 }

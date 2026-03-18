@@ -1,20 +1,25 @@
 package com.moviesafe
 
 import com.moviesafe.api.TmdbSearchService
+import com.moviesafe.api.TmdbSearchServiceImpl
 import com.moviesafe.model.Movie
 import com.moviesafe.repository.SearchRepository
 import com.moviesafe.repository.SearchRepositoryImpl
-import com.moviesafe.usecase.ObserveMovies
-import com.moviesafe.usecase.SearchMovies
+import com.moviesafe.ui.SearchViewModel
+import com.moviesafe.usecase.ClearMoviesUseCase
+import com.moviesafe.usecase.ObserveMoviesUseCase
+import com.moviesafe.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.serialization.builtins.ListSerializer
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val searchModule = module {
-    single {
-        TmdbSearchService(
+
+    single<TmdbSearchService> {
+        TmdbSearchServiceImpl(
             httpClient = get(),
             baseUrl = get(named("tmdb_base_url"))
         )
@@ -35,6 +40,18 @@ val searchModule = module {
         )
     }
 
-    factory { ObserveMovies(get()) }
-    factory { SearchMovies(get()) }
+    factory { ObserveMoviesUseCase(get()) }
+
+    factory { SearchMoviesUseCase(get()) }
+
+    factory { ClearMoviesUseCase(get()) }
+
+    viewModel {
+        SearchViewModel(
+            searchMoviesUseCase = get(),
+            observeMoviesUseCase = get(),
+            clearMoviesUseCase = get(),
+            accessToken = get(named("tmdb_access_token")),
+        )
+    }
 }
