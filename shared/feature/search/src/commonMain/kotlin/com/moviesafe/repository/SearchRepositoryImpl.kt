@@ -1,7 +1,7 @@
 package com.moviesafe.repository
 
 import com.moviesafe.PersistenceDataStore
-import com.moviesafe.api.TmdbSearchServiceImpl
+import com.moviesafe.api.TmdbSearchService
 import com.moviesafe.mapper.toDomain
 import com.moviesafe.model.Movie
 import com.moviesafe.model.PageInformation
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 
 class SearchRepositoryImpl(
     private val coroutineDispatcher: CoroutineDispatcher,
-    private val searchService: TmdbSearchServiceImpl,
+    private val searchService: TmdbSearchService,
     private val moviesDataStore: PersistenceDataStore<List<Movie>>,
     private val posterBaseUrl: String,
 ) : SearchRepository {
