@@ -50,7 +50,7 @@ class SearchViewModelTest {
         Dispatchers.resetMain()
     }
 
-    // ── Initial state ─────────────────────────────────────────────────────────
+    // Initial state
 
     @Test
     fun `initial state is default`() {
@@ -63,7 +63,7 @@ class SearchViewModelTest {
         assertEquals(1, repository.clearCallCount)
     }
 
-    // ── UpdateQuery ───────────────────────────────────────────────────────────
+    // UpdateQuery
 
     @Test
     fun `UpdateQuery updates query in state immediately`() {
@@ -146,7 +146,7 @@ class SearchViewModelTest {
         assertTrue(!viewModel.state.isSearchLoading)
     }
 
-    // ── LoadNextPage ──────────────────────────────────────────────────────────
+    // LoadNextPage
 
     @Test
     fun `LoadNextPage does nothing when canPaginate is false`() = runTest(testDispatcher) {
@@ -198,7 +198,7 @@ class SearchViewModelTest {
         assertTrue(!viewModel.state.isPagingLoading)
     }
 
-    // ── SelectMovie ───────────────────────────────────────────────────────────
+    // SelectMovie
 
     @Test
     fun `SelectMovie emits MovieSelected event`() = runTest(testDispatcher) {
@@ -213,7 +213,7 @@ class SearchViewModelTest {
         job.cancel()
     }
 
-    // ── Repository observation ────────────────────────────────────────────────
+    // Repository observation
 
     @Test
     fun `movies from repository are reflected in state`() = runTest(testDispatcher) {

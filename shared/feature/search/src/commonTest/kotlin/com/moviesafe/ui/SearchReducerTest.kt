@@ -12,7 +12,7 @@ class SearchReducerTest {
 
     private val default = SearchState()
 
-    // ── SetQuery ──────────────────────────────────────────────────────────────
+    // SetQuery
 
     @Test
     fun `SetQuery updates query`() {
@@ -28,7 +28,7 @@ class SearchReducerTest {
         assertEquals(2, result.currentPage)
     }
 
-    // ── SetMovies ─────────────────────────────────────────────────────────────
+    // SetMovies
 
     @Test
     fun `SetMovies replaces movie list`() {
@@ -44,7 +44,7 @@ class SearchReducerTest {
         assertTrue(result.movies.isEmpty())
     }
 
-    // ── SetPageInfo ───────────────────────────────────────────────────────────
+    // SetPageInfo
 
     @Test
     fun `SetPageInfo updates currentPage and totalPages`() {
@@ -53,7 +53,7 @@ class SearchReducerTest {
         assertEquals(10, result.totalPages)
     }
 
-    // ── SetSearchLoading ──────────────────────────────────────────────────────
+    // SetSearchLoading
 
     @Test
     fun `SetSearchLoading true sets flag`() {
@@ -68,7 +68,7 @@ class SearchReducerTest {
         assertFalse(result.isSearchLoading)
     }
 
-    // ── SetPagingLoading ──────────────────────────────────────────────────────
+    // SetPagingLoading
 
     @Test
     fun `SetPagingLoading true sets flag`() {
@@ -83,7 +83,7 @@ class SearchReducerTest {
         assertFalse(result.isPagingLoading)
     }
 
-    // ── SetError ──────────────────────────────────────────────────────────────
+    // SetError
 
     @Test
     fun `SetError sets error`() {
