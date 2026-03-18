@@ -34,10 +34,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.moviesafe.model.Movie
 import org.koin.compose.viewmodel.koinViewModel
-
-private const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342"
 private const val GRID_COLUMNS = 3
 
 @Composable
@@ -122,7 +123,7 @@ private fun SearchScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             verticalArrangement = Arrangement.spacedBy(6.dp),
                         ) {
-                            items(state.movies, key = { it.id }) { movie ->
+                            items(state.movies) { movie ->
                                 MovieGridItem(movie = movie, onClick = { onMovieClick(movie.id) })
                             }
 
@@ -142,9 +143,11 @@ private fun SearchScreenContent(
                     }
                 }
 
+                // TODO handle different exception types - network, api, domain specific etc.
                 state.error?.let { error ->
                     Text(
-                        text = error,
+                        // TODO generic error message string resource
+                        text = error.message ?: "An error occured",
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -166,7 +169,10 @@ private fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
     ) {
         Box {
             AsyncImage(
-                model = movie.posterPath?.let { "$TMDB_IMAGE_BASE_URL$it" },
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(movie.posterUrl)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
@@ -207,7 +213,7 @@ private val previewMovies = listOf(
         id = index.toString(),
         title = title,
         overview = "A compelling story about heroes and villains.",
-        posterPath = null,
+        posterUrl = null,
         backdropPath = null,
         releaseDate = "2024",
         voteAverage = 8.0,

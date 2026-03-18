@@ -17,5 +17,5 @@ internal actual fun dataStorePath(filename: String): Path {
         create = false,
         error = null
     )
-    return (requireNotNull(documentDirectory).path + "/dataStore/$filename").toPath()
+    return (requireNotNull(documentDirectory).path + "/dataStore/$filename.preferences_pb").toPath()
 }

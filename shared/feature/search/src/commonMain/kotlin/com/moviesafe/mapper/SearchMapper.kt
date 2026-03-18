@@ -5,11 +5,11 @@ import com.moviesafe.dto.TvSeriesSearchResultDto
 import com.moviesafe.model.Movie
 import com.moviesafe.model.TvSeries
 
-internal fun MovieSearchResultDto.toDomain() = Movie(
+internal fun MovieSearchResultDto.toDomain(posterBaseUrl: String) = Movie(
     id = id,
     title = title,
     overview = overview,
-    posterPath = posterPath,
+    posterUrl = posterBaseUrl + posterPath,
     backdropPath = backdropPath,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
@@ -17,11 +17,11 @@ internal fun MovieSearchResultDto.toDomain() = Movie(
     genreIds = genreIds,
 )
 
-internal fun TvSeriesSearchResultDto.toDomain() = TvSeries(
+internal fun TvSeriesSearchResultDto.toDomain(posterBaseUrl: String) = TvSeries(
     id = id,
     name = name,
     overview = overview,
-    posterPath = posterPath,
+    posterUrl = posterBaseUrl + posterPath,
     backdropPath = backdropPath,
     firstAirDate = firstAirDate,
     voteAverage = voteAverage,

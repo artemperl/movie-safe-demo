@@ -9,5 +9,5 @@ sealed interface SearchMutation {
     data class SetPageInfo(val pageInfo: PageInformation) : SearchMutation
     data class SetSearchLoading(val isLoading: Boolean) : SearchMutation
     data class SetPagingLoading(val isLoading: Boolean) : SearchMutation
-    data class SetError(val error: String?) : SearchMutation
+    data class SetError(val error: Throwable?) : SearchMutation
 }

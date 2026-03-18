@@ -11,7 +11,6 @@ interface SearchRepository {
 
     suspend fun searchMovies(
         query: String,
-        accessToken: String,
         page: Int = 1,
     ): Result<PageInformation>
 
