@@ -37,15 +37,23 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.diamondedge.logging.logging
 import com.moviesafe.model.Movie
 import org.koin.compose.viewmodel.koinViewModel
 private const val GRID_COLUMNS = 3
+
+private val log = logging()
 
 @Composable
 fun SearchScreen(
     onMovieSelected: (movieId: String) -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
 ) {
+    LaunchedEffect(Unit) {
+        // TODO log/track based on screen lifecycle events
+        log.d { "[SCREEN START] SearchScreen" }
+    }
+
     HandleEvents(
         viewModel = viewModel,
         onMovieSelected = onMovieSelected
@@ -66,6 +74,7 @@ private fun HandleEvents(
 ) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
+            log.d { "[SCREEN EVENT] $event" }
             when (event) {
                 is SearchViewModel.Event.MovieSelected -> onMovieSelected(event.movieId)
             }
@@ -185,7 +194,7 @@ private fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
                     .background(
                         Brush.verticalGradient(
                             0.7f to Color.Transparent,
-                            1f to Color.Black.copy(alpha = 0.8f),
+                            1f to Color.Black.copy(alpha = 1.0f),
                         )
                     )
             )

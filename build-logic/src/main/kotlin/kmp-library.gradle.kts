@@ -15,6 +15,9 @@ kotlin {
     android {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        withHostTest {
+            isReturnDefaultValues = true
+        }
     }
 
     iosX64()
@@ -41,6 +44,13 @@ kotlin {
             dependencies {
                 implementation(libs.koin.android)
                 implementation(libs.compose.ui.tooling)
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.coroutines.test)
             }
         }
     }
