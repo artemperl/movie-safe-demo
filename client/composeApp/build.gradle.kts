@@ -48,5 +48,9 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        androidHostTest.dependencies {
+            implementation(libs.koin.test)
+            implementation(libs.ktor.client.core)
+        }
     }
 }
