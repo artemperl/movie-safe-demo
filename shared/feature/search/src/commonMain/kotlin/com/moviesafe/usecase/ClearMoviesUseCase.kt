@@ -2,6 +2,6 @@ package com.moviesafe.usecase
 
 import com.moviesafe.repository.SearchRepository
 
-class ClearMoviesUseCase(private val repository: SearchRepository) {
-    suspend operator fun invoke() = repository.clearMovies()
+open class ClearMoviesUseCase(private val repository: SearchRepository) {
+    open suspend operator fun invoke(): Result<Unit> = repository.clearMovies()
 }

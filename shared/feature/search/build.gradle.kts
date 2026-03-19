@@ -11,6 +11,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":shared:library:designsystem"))
                 implementation(project(":shared:network"))
                 implementation(project(":shared:persistence"))
                 implementation(libs.coil.compose)

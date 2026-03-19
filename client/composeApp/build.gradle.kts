@@ -43,10 +43,15 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.serialization.json)
 
+            implementation(project(":shared:library:designsystem"))
             implementation(project(":shared:feature:search"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        androidHostTest.dependencies {
+            implementation(libs.koin.test)
+            implementation(libs.ktor.client.core)
         }
     }
 }

@@ -33,19 +33,33 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.LifecycleStartEffect
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.diamondedge.logging.logging
 import com.moviesafe.model.Movie
+import com.moviesafe.theme.MovieSafeTheme
 import org.koin.compose.viewmodel.koinViewModel
+
 private const val GRID_COLUMNS = 3
+
+private val log = logging()
 
 @Composable
 fun SearchScreen(
     onMovieSelected: (movieId: String) -> Unit,
     viewModel: SearchViewModel = koinViewModel(),
 ) {
+    LifecycleStartEffect(Unit) {
+        log.d { "[SCREEN START] SearchScreen" }
+
+        onStopOrDispose {
+            log.d { "[SCREEN STOP] SearchScreen" }
+        }
+    }
+
     HandleEvents(
         viewModel = viewModel,
         onMovieSelected = onMovieSelected
@@ -66,6 +80,7 @@ private fun HandleEvents(
 ) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
+            log.d { "[SCREEN EVENT] $event" }
             when (event) {
                 is SearchViewModel.Event.MovieSelected -> onMovieSelected(event.movieId)
             }
@@ -74,7 +89,7 @@ private fun HandleEvents(
 }
 
 @Composable
-private fun SearchScreenContent(
+fun SearchScreenContent(
     state: SearchState,
     onNewSearchQuery: (String) -> Unit,
     onLoadNextPage: () -> Unit,
@@ -185,7 +200,7 @@ private fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
                     .background(
                         Brush.verticalGradient(
                             0.7f to Color.Transparent,
-                            1f to Color.Black.copy(alpha = 0.8f),
+                            1f to Color.Black.copy(alpha = 1.0f),
                         )
                     )
             )
@@ -225,7 +240,7 @@ private val previewMovies = listOf(
 @Preview
 @Composable
 private fun SearchScreenContentPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(query = "Marvel", movies = previewMovies),
             onNewSearchQuery = {},
@@ -238,7 +253,7 @@ private fun SearchScreenContentPreview() {
 @Preview
 @Composable
 private fun SearchScreenSearchLoadingPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(query = "Marvel", isSearchLoading = true),
             onNewSearchQuery = {},
@@ -251,7 +266,7 @@ private fun SearchScreenSearchLoadingPreview() {
 @Preview
 @Composable
 private fun SearchScreenPagingLoadingPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(
                 query = "Marvel",

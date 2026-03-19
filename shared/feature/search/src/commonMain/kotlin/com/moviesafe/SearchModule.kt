@@ -26,7 +26,7 @@ val searchModule = module {
         )
     }
 
-    single(named("movies_store")) {
+    single<MSDataStore<List<Movie>>>(named("movies_store")) {
         PersistenceDataStore(
             serializer = ListSerializer(Movie.serializer()),
             filename = "movies_search",

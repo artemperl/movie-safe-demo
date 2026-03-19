@@ -14,17 +14,17 @@ import okio.Path
 class PersistenceDataStore<T>(
     private val serializer: KSerializer<T>,
     private val filename: String
-)  {
+) : MSDataStore<T> {
 
     private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath {
         dataStorePath(filename)
     }
 
-    val data: Flow<T?> = dataStore.data.map { prefs ->
+    override val data: Flow<T?> = dataStore.data.map { prefs ->
         readData(prefs)
     }
 
-    suspend fun updateData(update: (T?) -> T?) {
+    override suspend fun updateData(update: (T?) -> T?): Result<Unit> = runCatching {
         dataStore.edit { prefs ->
             val currentValue = readData(prefs)
             val newValue = update(currentValue)
