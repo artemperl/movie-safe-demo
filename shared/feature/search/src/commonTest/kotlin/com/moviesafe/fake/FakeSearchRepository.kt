@@ -29,8 +29,9 @@ class FakeSearchRepository : SearchRepository {
         return searchResult
     }
 
-    override suspend fun clearMovies() {
+    override suspend fun clearMovies(): Result<Unit> {
         clearCallCount++
         moviesFlow.value = null
+        return Result.success(Unit)
     }
 }

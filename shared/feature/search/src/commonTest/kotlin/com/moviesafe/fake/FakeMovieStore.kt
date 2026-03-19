@@ -11,8 +11,9 @@ class FakeMovieStore : MSDataStore<List<Movie>> {
 
     override val data: Flow<List<Movie>?> = moviesFlow
 
-    override suspend fun updateData(update: (List<Movie>?) -> List<Movie>?) {
+    override suspend fun updateData(update: (List<Movie>?) -> List<Movie>?): Result<Unit> {
         moviesFlow.value = update(moviesFlow.value)
+        return Result.success(Unit)
     }
 
     fun currentMovies(): List<Movie>? = moviesFlow.value

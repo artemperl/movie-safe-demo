@@ -6,7 +6,8 @@ class FakeClearMoviesUseCase : ClearMoviesUseCase(repository = FakeSearchReposit
 
     var callCount = 0
 
-    override suspend fun invoke() {
+    override suspend fun invoke(): Result<Unit> {
         callCount++
+        return Result.success(Unit)
     }
 }
