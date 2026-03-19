@@ -1,10 +1,10 @@
 package com.moviesafe.screenshot
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.android.tools.screenshot.PreviewTest
 import com.moviesafe.model.Movie
+import com.moviesafe.theme.MovieSafeTheme
 import com.moviesafe.ui.SearchScreenContent
 import com.moviesafe.ui.SearchState
 
@@ -30,7 +30,7 @@ private val previewMovies = listOf(
 @Preview
 @Composable
 fun SearchScreenContentPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(query = "Marvel", movies = previewMovies),
             onNewSearchQuery = {},
@@ -44,7 +44,7 @@ fun SearchScreenContentPreview() {
 @Preview
 @Composable
 fun SearchScreenSearchLoadingPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(query = "Marvel", isSearchLoading = true),
             onNewSearchQuery = {},
@@ -58,7 +58,7 @@ fun SearchScreenSearchLoadingPreview() {
 @Preview
 @Composable
 fun SearchScreenPagingLoadingPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(
                 query = "Marvel",
@@ -78,7 +78,7 @@ fun SearchScreenPagingLoadingPreview() {
 @Preview
 @Composable
 fun SearchScreenErrorPreview() {
-    MaterialTheme {
+    MovieSafeTheme {
         SearchScreenContent(
             state = SearchState(
                 query = "Marvel",

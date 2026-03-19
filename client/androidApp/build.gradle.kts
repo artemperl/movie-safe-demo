@@ -50,7 +50,7 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 
     screenshotTestImplementation(project(":shared:feature:search"))
-    screenshotTestImplementation(libs.compose.material3)
+    screenshotTestImplementation(project(":shared:library:designsystem"))
     screenshotTestImplementation(libs.screenshot.validation.api)
 
 }

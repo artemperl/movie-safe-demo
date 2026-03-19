@@ -43,6 +43,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.serialization.json)
 
+            implementation(project(":shared:library:designsystem"))
             implementation(project(":shared:feature:search"))
         }
         commonTest.dependencies {
