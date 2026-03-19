@@ -38,7 +38,9 @@ class SearchViewModel(
 
     init {
         viewModelScope.launch {
-            clearMoviesUseCase()
+            // don't handle errors when clearing at the moment
+            val clearMoviesResult = clearMoviesUseCase()
+
             observeMoviesUseCase().collect { movies ->
                 mutate(SearchMutation.SetMovies(movies.orEmpty()))
             }

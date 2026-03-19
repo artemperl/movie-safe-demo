@@ -35,6 +35,8 @@ class SearchRepositoryImpl(
         result.let { movies ->
             moviesDataStore.updateData { currentMovies ->
                 currentMovies.orEmpty() + movies
+            }.onFailure { error ->
+                return Result.failure(error)
             }
         }
 
@@ -46,8 +48,8 @@ class SearchRepositoryImpl(
         )
     }
 
-    override suspend fun clearMovies() {
-        moviesDataStore.updateData { null }
+    override suspend fun clearMovies(): Result<Unit> {
+        return moviesDataStore.updateData { null }
     }
 
 }

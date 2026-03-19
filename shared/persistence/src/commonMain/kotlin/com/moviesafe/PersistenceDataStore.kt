@@ -24,7 +24,7 @@ class PersistenceDataStore<T>(
         readData(prefs)
     }
 
-    override suspend fun updateData(update: (T?) -> T?) {
+    override suspend fun updateData(update: (T?) -> T?): Result<Unit> = runCatching {
         dataStore.edit { prefs ->
             val currentValue = readData(prefs)
             val newValue = update(currentValue)
