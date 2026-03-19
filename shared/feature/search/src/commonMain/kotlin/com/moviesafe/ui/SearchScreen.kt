@@ -83,7 +83,7 @@ private fun HandleEvents(
 }
 
 @Composable
-private fun SearchScreenContent(
+fun SearchScreenContent(
     state: SearchState,
     onNewSearchQuery: (String) -> Unit,
     onLoadNextPage: () -> Unit,
