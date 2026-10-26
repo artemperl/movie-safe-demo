@@ -8,5 +8,8 @@ sealed interface Route {
     data object Search : Route
 
     @Serializable
+    data class Details(val movieId: String): Route
+
+    @Serializable
     data class MovieDetail(val movieId: String) : Route
 }

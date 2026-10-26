@@ -45,6 +45,7 @@ kotlin {
 
             implementation(project(":shared:library:designsystem"))
             implementation(project(":shared:feature:search"))
+            implementation(project(":shared:feature:detail"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

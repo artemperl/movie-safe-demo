@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -97,7 +98,7 @@ fun SearchScreenContent(
 ) {
     val gridState = rememberLazyGridState()
 
-    val shouldLoadMore by remember {
+    val shouldLoadMore by rememberSaveable {
         derivedStateOf {
             val lastVisible = gridState.layoutInfo.visibleItemsInfo.lastOrNull()
                 ?: return@derivedStateOf false

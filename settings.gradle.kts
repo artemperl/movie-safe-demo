@@ -32,6 +32,7 @@ dependencyResolutionManagement {
 include("client:composeApp")
 include("client:androidApp")
 include("shared:feature:search")
+include("shared:feature:detail")
 include("shared:feature:watchlist")
 include("shared:feature:preferences")
 include("shared:library:designsystem")

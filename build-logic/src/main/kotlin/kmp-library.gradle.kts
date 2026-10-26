@@ -43,7 +43,6 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.koin.android)
-                implementation(libs.compose.ui.tooling)
             }
         }
 
@@ -54,4 +53,11 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    // com.android.kotlin.multiplatform.library has no debug variant to hang ui-tooling
+    // off of (unlike com.android.application/library's debugImplementation), so Compose
+    // Preview rendering needs it on this classpath instead.
+    add("androidRuntimeClasspath", libs.compose.ui.tooling)
 }

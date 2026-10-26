@@ -13,7 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.moviesafe.ui.DetailScreen
+import com.moviesafe.ui.DetailViewModel
 import com.moviesafe.ui.SearchScreen
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun AppRoot() {
@@ -31,6 +35,18 @@ fun AppRoot() {
                         onMovieSelected = { movieId ->
                             navController.navigate(Route.MovieDetail(movieId))
                         },
+                    )
+                }
+
+                composable<Route.Details> { backStackEntry ->
+                    val route = backStackEntry.toRoute<Route.Details>()
+                    val viewModel = koinViewModel<DetailViewModel> { parametersOf(route.movieId) }
+
+                    DetailScreen(
+                        viewModel = viewModel,
+                        onExit = {
+                            // TODO
+                        }
                     )
                 }
 

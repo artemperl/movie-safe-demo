@@ -48,7 +48,6 @@ class SearchViewModel(
         viewModelScope.launch {
             // fire queries with debounce
             queryFlow
-                .filter { it.isNotBlank() }
                 .debounce(500L)
                 .collect { query ->
                     if (query.isBlank()) {

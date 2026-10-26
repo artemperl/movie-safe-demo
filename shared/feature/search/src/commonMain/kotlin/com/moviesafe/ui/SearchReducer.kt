@@ -1,7 +1,7 @@
 package com.moviesafe.ui
 
 
-fun SearchState.reduce(mutation: SearchMutation): SearchState =
+internal fun SearchState.reduce(mutation: SearchMutation): SearchState =
     when (mutation) {
         is SearchMutation.SetQuery -> copy(query = mutation.query)
         is SearchMutation.SetMovies -> copy(movies = mutation.movies)

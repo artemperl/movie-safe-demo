@@ -49,7 +49,7 @@ class SearchRepositoryImpl(
     }
 
     override suspend fun clearMovies(): Result<Unit> {
-        return moviesDataStore.updateData { null }
+        return moviesDataStore.updateData { null }.map { Unit }
     }
 
 }

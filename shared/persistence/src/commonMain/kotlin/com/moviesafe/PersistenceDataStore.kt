@@ -24,21 +24,22 @@ class PersistenceDataStore<T>(
         readData(prefs)
     }
 
-    override suspend fun updateData(update: (T?) -> T?): Result<Unit> = runCatching {
+    override suspend fun updateData(update: (T?) -> T?): Result<T?> = runCatching {
+        var newValue: T? = null
         dataStore.edit { prefs ->
             val currentValue = readData(prefs)
-            val newValue = update(currentValue)
-            if (newValue == null) {
-                prefs.remove(stringPreferencesKey(DATA_KEY))
-            } else {
-                prefs[stringPreferencesKey(DATA_KEY)] = Json.encodeToString(serializer, newValue)
-            }
+            newValue = update(currentValue)
+            newValue?.let {
+                prefs[stringPreferencesKey(DATA_KEY)] = Json.encodeToString(serializer, it)
+            } ?: prefs.remove(stringPreferencesKey(DATA_KEY))
         }
+        newValue
     }
 
-    private fun readData(prefs: Preferences): T? = prefs[stringPreferencesKey(DATA_KEY)]?.runCatching {
-        Json.decodeFromString(serializer, this)
-    }?.getOrNull()
+    private fun readData(prefs: Preferences): T? =
+        prefs[stringPreferencesKey(DATA_KEY)]?.runCatching {
+            Json.decodeFromString(serializer, this)
+        }?.getOrNull()
 
 }
 
